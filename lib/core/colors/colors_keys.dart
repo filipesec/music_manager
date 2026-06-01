@@ -1,6 +1,6 @@
 import 'dart:ui';
 
 class ColorsKeys{
-  static const Color bgDefault = Color(0XFFFFFFFF);
-  static const Color textPrimary = Color(0XFF7C3AED);
+  static const Color bgDefault = Color(0XFFFFFAFA);
+  static const Color textPrimary = Color(0XFF37105E);
 }

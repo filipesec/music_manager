@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:music_manager/core/colors/colors_keys.dart';
 import 'package:music_manager/features/home/widgets/filter.dart';
+import 'package:music_manager/features/home/widgets/cards_section.dart';
 
 class HomePage extends StatefulWidget{
   const HomePage({super.key});
-
+  @override
   State<HomePage> createState() => _HomePageState();
 }
 
@@ -19,11 +20,20 @@ class _HomePageState extends State<HomePage>{
         backgroundColor: ColorsKeys.bgDefault,
         elevation: 1,
         centerTitle: true,
+        leading: Padding(
+            padding: EdgeInsets.only(left: 15),
+          child: Image.asset('assets/images/theme.png', scale: 25),
+          ),
         title: Text('SHii', style: TextStyle(color: ColorsKeys.textPrimary, fontSize: 32, fontWeight: FontWeight.bold)),
         actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 15),
-          child: Image.asset('assets/images/theme.png', scale: 20),
+          Container(
+            width: 60,
+            height: 40,
+            decoration: BoxDecoration(
+              color: ColorsKeys.textPrimary,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(Icons.add, color: Colors.white,),
           ),
         ]
       ),
@@ -45,6 +55,22 @@ class _HomePageState extends State<HomePage>{
                 });
               },
             ),
+            ),
+            //cards
+            Expanded(
+              child: GridView.builder(
+                padding: EdgeInsets.all(8),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.71,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                ),
+                itemCount: 6,
+                itemBuilder: (context, index) {
+                  return CardSection(cover: null, name: 'Aerials', artist: 'System Of a Down', gender: 'Rock');
+                },
+              ),
             ),
           ]
         ),
