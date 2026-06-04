@@ -7,6 +7,7 @@
       "name": "music_manager",
       "version": "0.1.0+1",
       "dependencies": [
+        "dotted_border",
         "flutter"
       ],
       "devDependencies": [
@@ -49,6 +50,13 @@
         "meta",
         "sky_engine",
         "vector_math"
+      ]
+    },
+    {
+      "name": "dotted_border",
+      "version": "3.1.0",
+      "dependencies": [
+        "flutter"
       ]
     },
     {
