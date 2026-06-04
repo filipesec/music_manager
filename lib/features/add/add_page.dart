@@ -67,7 +67,7 @@ class AddPage extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                '+ Adicionar Música',
+                '+ Adicionar',
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
