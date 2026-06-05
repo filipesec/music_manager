@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_manager/core/colors/colors_keys.dart';
 import 'package:music_manager/features/add/add_page.dart';
+import 'package:music_manager/features/genre/genre_page.dart';
 import 'package:music_manager/features/home/widgets/filter_section.dart';
 import 'package:music_manager/features/home/widgets/cards_section.dart';
 
@@ -58,16 +59,39 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: Text(
-              'Minhas Músicas',
-              style: TextStyle(
-                color: ColorsKeys.textPrimary,
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(8),
+                child: Text(
+                  'Minhas Músicas',
+                  style: TextStyle(
+                    color: ColorsKeys.textPrimary,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-            ),
+
+              Spacer(),
+
+              Padding(
+                padding: EdgeInsets.all(8),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorsKeys.textPrimary,
+                  ),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => GenrePage()),
+                  ),
+                  child: Text(
+                    'Gêneros',
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+                ),
+              ),
+            ],
           ),
           //filtro
           Padding(
