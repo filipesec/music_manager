@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_manager/core/colors/colors_keys.dart';
 import 'package:dotted_border/dotted_border.dart';
 
 class Information extends StatelessWidget {
@@ -7,6 +6,7 @@ class Information extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -15,7 +15,7 @@ class Information extends StatelessWidget {
           child: Text(
             'Arquivo de música:',
             style: TextStyle(
-              color: ColorsKeys.textPrimary,
+              color: colors.onSurface,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -24,7 +24,7 @@ class Information extends StatelessWidget {
         DottedBorder(
           options: RoundedRectDottedBorderOptions(
             radius: Radius.circular(10),
-            color: ColorsKeys.textPrimary,
+            color: Colors.grey,
             dashPattern: [4, 4],
             strokeWidth: 1,
           ),
@@ -32,7 +32,7 @@ class Information extends StatelessWidget {
             height: 50,
             width: 320,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: colors.surface,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Row(
@@ -43,12 +43,12 @@ class Information extends StatelessWidget {
                   child: Icon(
                     Icons.music_note_outlined,
                     size: 20,
-                    color: ColorsKeys.textPrimary,
+                    color: colors.onSurface,
                   ),
                 ),
                 Text(
                   'Selecionar Arquivo de Música',
-                  style: TextStyle(color: ColorsKeys.textPrimary, fontSize: 16),
+                  style: TextStyle(color: colors.onSurface, fontSize: 16),
                 ),
               ],
             ),
@@ -60,7 +60,7 @@ class Information extends StatelessWidget {
           child: Text(
             'Nome:',
             style: TextStyle(
-              color: ColorsKeys.textPrimary,
+              color: colors.onSurface,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -74,21 +74,15 @@ class Information extends StatelessWidget {
               hintText: 'Digite o nome da música',
               hintStyle: TextStyle(color: Colors.grey),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: colors.surface,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: ColorsKeys.textPrimary.withValues(alpha: 0.8),
-                  width: 0.5,
-                ),
+                borderSide: BorderSide(color: Colors.grey, width: 0.5),
               ),
 
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: ColorsKeys.textPrimary.withValues(alpha: 0.8),
-                  width: 1,
-                ),
+                borderSide: BorderSide(color: Colors.grey, width: 1),
               ),
             ),
           ),
@@ -99,7 +93,7 @@ class Information extends StatelessWidget {
           child: Text(
             'Artista:',
             style: TextStyle(
-              color: ColorsKeys.textPrimary,
+              color: colors.onSurface,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -113,21 +107,15 @@ class Information extends StatelessWidget {
               hintText: 'Digite o nome do artista ou banda',
               hintStyle: TextStyle(color: Colors.grey),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: colors.surface,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: ColorsKeys.textPrimary.withValues(alpha: 0.8),
-                  width: 0.5,
-                ),
+                borderSide: BorderSide(color: Colors.grey, width: 0.5),
               ),
 
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: ColorsKeys.textPrimary.withValues(alpha: 0.8),
-                  width: 1,
-                ),
+                borderSide: BorderSide(color: Colors.grey, width: 1),
               ),
             ),
           ),
@@ -138,7 +126,7 @@ class Information extends StatelessWidget {
           child: Text(
             'Gênero:',
             style: TextStyle(
-              color: ColorsKeys.textPrimary,
+              color: colors.onSurface,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -150,22 +138,16 @@ class Information extends StatelessWidget {
           child: DropdownButtonFormField<String>(
             decoration: InputDecoration(
               hintText: 'Selecione o gênero musical',
-              hintStyle: TextStyle(color: Colors.grey),
+              hintStyle: TextStyle(color: colors.onSurface),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: colors.surface,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: ColorsKeys.textPrimary.withValues(alpha: 0.8),
-                  width: 0.5,
-                ),
+                borderSide: BorderSide(color: Colors.grey, width: 0.5),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: ColorsKeys.textPrimary.withValues(alpha: 0.8),
-                  width: 1,
-                ),
+                borderSide: BorderSide(color: Colors.grey, width: 1),
               ),
             ),
 

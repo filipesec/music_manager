@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-
-import 'package:music_manager/core/colors/colors_keys.dart';
 import 'package:music_manager/features/adit/edit_page.dart';
 
 class CardSection extends StatelessWidget {
@@ -20,9 +18,10 @@ class CardSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Card(
       elevation: 1,
-      color: Colors.white,
+      color: colors.surfaceContainerHighest,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -52,7 +51,7 @@ class CardSection extends StatelessWidget {
               child: Text(
                 name,
                 style: TextStyle(
-                  color: ColorsKeys.textPrimary,
+                  color: colors.onSurface,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -62,7 +61,7 @@ class CardSection extends StatelessWidget {
               padding: const EdgeInsets.only(left: 8, top: 2),
               child: Text(
                 artist,
-                style: TextStyle(color: ColorsKeys.textPrimary, fontSize: 15),
+                style: TextStyle(color: colors.onSurface, fontSize: 15),
               ),
             ),
             Row(
@@ -73,13 +72,13 @@ class CardSection extends StatelessWidget {
                     height: 25,
                     width: 50,
                     decoration: BoxDecoration(
-                      color: const Color(0XFF37105E),
+                      color: colors.primary,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     alignment: Alignment.center,
                     child: Text(
                       gender,
-                      style: const TextStyle(color: Colors.white, fontSize: 13),
+                      style: TextStyle(color: Colors.white, fontSize: 13),
                     ),
                   ),
                 ),
@@ -93,11 +92,7 @@ class CardSection extends StatelessWidget {
                   },
                   child: Padding(
                     padding: EdgeInsets.only(right: 8),
-                    child: Icon(
-                      Icons.edit,
-                      size: 20,
-                      color: ColorsKeys.textPrimary,
-                    ),
+                    child: Icon(Icons.edit, size: 20, color: colors.onSurface),
                   ),
                 ),
                 Icon(Icons.delete_outline, size: 20, color: Colors.red),

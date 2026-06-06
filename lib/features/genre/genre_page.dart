@@ -15,26 +15,44 @@ class _GenrePageState extends State<GenrePage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: ColorsKeys.bgDefault,
+      backgroundColor: colors.surface,
       appBar: AppBar(
-        backgroundColor: ColorsKeys.bgDefault,
+        backgroundColor: colors.surface,
+        elevation: 1,
+        shadowColor: Colors.black.withValues(alpha: 3),
+        surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: ColorsKeys.textPrimary),
-          onPressed: () => Navigator.pop(context),
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Icon(Icons.arrow_back, color: colors.primary),
         ),
         title: Text(
-          'Gerenciar Gêneros',
+          'SHii',
           style: TextStyle(
-            color: ColorsKeys.textPrimary,
-            fontSize: 24,
+            color: colors.primary,
+            fontSize: 32,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
       body: Column(
         children: [
+          Center(
+            child: Padding(
+              padding: EdgeInsets.only(top: 15),
+              child: Text(
+                'Gerênciar Gêneros',
+                style: TextStyle(
+                  color: colors.onSurface,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+
           Padding(
             padding: EdgeInsets.all(16),
             child: SizedBox(
@@ -45,20 +63,14 @@ class _GenrePageState extends State<GenrePage> {
                   hintText: 'Digite o nome do gênero',
                   hintStyle: TextStyle(color: Colors.grey),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: colors.surfaceContainerHighest,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(
-                      color: ColorsKeys.textPrimary.withValues(alpha: 0.8),
-                      width: 0.5,
-                    ),
+                    borderSide: BorderSide(color: Colors.grey, width: 0.5),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(
-                      color: ColorsKeys.textPrimary.withValues(alpha: 0.8),
-                      width: 1,
-                    ),
+                    borderSide: BorderSide(color: Colors.grey, width: 1),
                   ),
                 ),
                 style: TextStyle(color: ColorsKeys.textPrimary),
@@ -84,7 +96,7 @@ class _GenrePageState extends State<GenrePage> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorsKeys.textPrimary,
+                  backgroundColor: colors.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -107,27 +119,21 @@ class _GenrePageState extends State<GenrePage> {
                   padding: EdgeInsets.only(bottom: 12),
                   child: Card(
                     elevation: 1,
-                    color: Colors.white,
+                    color: colors.surfaceContainerHighest,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: ListTile(
-                      leading: Icon(Icons.label, color: ColorsKeys.textPrimary),
+                      leading: Icon(Icons.label, color: colors.onSurface),
                       title: Text(
                         genero,
-                        style: TextStyle(
-                          color: ColorsKeys.textPrimary,
-                          fontSize: 16,
-                        ),
+                        style: TextStyle(color: colors.onSurface, fontSize: 16),
                       ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
-                            icon: Icon(
-                              Icons.edit,
-                              color: ColorsKeys.textPrimary,
-                            ),
+                            icon: Icon(Icons.edit, color: colors.onSurface),
                             onPressed: () {
                               setState(() {
                                 _editingIndex = index;

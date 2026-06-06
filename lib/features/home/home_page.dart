@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:music_manager/core/colors/colors_keys.dart';
 import 'package:music_manager/features/add/add_page.dart';
 import 'package:music_manager/features/genre/genre_page.dart';
 import 'package:music_manager/features/home/widgets/filter_section.dart';
 import 'package:music_manager/features/home/widgets/cards_section.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_manager/core/theme/bloc/theme_bloc.dart';
+import 'package:music_manager/core/theme/bloc/theme_event.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,22 +18,29 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext build) {
+    final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: ColorsKeys.bgDefault,
+      backgroundColor: colors.surface,
       appBar: AppBar(
-        backgroundColor: ColorsKeys.bgDefault,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 1,
         shadowColor: Colors.black.withValues(alpha: 3),
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
         leading: Padding(
           padding: EdgeInsets.only(left: 15),
-          child: Image.asset('assets/images/theme.png', scale: 25),
+          child: GestureDetector(
+            onTap: () {
+              context.read<ThemeBloc>().add(ToggleThemeEvent());
+            },
+            child: Image.asset('assets/images/theme.png', scale: 25),
+          ),
         ),
         title: Text(
           'SHii',
           style: TextStyle(
-            color: ColorsKeys.textPrimary,
+            color: colors.primary,
             fontSize: 32,
             fontWeight: FontWeight.bold,
           ),
@@ -48,7 +57,7 @@ class _HomePageState extends State<HomePage> {
               width: 60,
               height: 40,
               decoration: BoxDecoration(
-                color: ColorsKeys.textPrimary,
+                color: colors.primary,
                 shape: BoxShape.circle,
               ),
               child: Icon(Icons.add, color: Colors.white),
@@ -66,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                 child: Text(
                   'Minhas Músicas',
                   style: TextStyle(
-                    color: ColorsKeys.textPrimary,
+                    color: colors.onSurface,
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                   ),
@@ -79,7 +88,9 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.all(8),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorsKeys.textPrimary,
+                    backgroundColor: colors.surface,
+                    elevation: 0,
+                    side: BorderSide(color: Colors.grey, width: 1),
                   ),
                   onPressed: () => Navigator.push(
                     context,
@@ -87,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Text(
                     'Gêneros',
-                    style: TextStyle(color: Colors.white, fontSize: 12),
+                    style: TextStyle(color: colors.onSurface, fontSize: 12),
                   ),
                 ),
               ),

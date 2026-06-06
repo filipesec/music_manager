@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_manager/core/colors/colors_keys.dart';
 import 'package:dotted_border/dotted_border.dart';
 
 class ImageSectionEdit extends StatelessWidget {
@@ -7,10 +6,11 @@ class ImageSectionEdit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return DottedBorder(
       options: RoundedRectDottedBorderOptions(
         radius: Radius.circular(20),
-        color: ColorsKeys.textPrimary,
+        color: Colors.grey,
         dashPattern: [4, 4],
         strokeWidth: 1,
       ),
@@ -18,7 +18,7 @@ class ImageSectionEdit extends StatelessWidget {
         height: 180,
         width: 180,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colors.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -29,13 +29,10 @@ class ImageSectionEdit extends StatelessWidget {
               child: Icon(
                 Icons.add_photo_alternate,
                 size: 35,
-                color: ColorsKeys.textPrimary,
+                color: colors.onSurface,
               ),
             ),
-            Text(
-              'Editar Capa',
-              style: TextStyle(color: ColorsKeys.textPrimary),
-            ),
+            Text('Editar Capa', style: TextStyle(color: colors.onSurface)),
           ],
         ),
       ),

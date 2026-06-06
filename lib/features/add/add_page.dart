@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_manager/core/colors/colors_keys.dart';
 import 'package:music_manager/features/add/widgets/image_section.dart';
 import 'package:music_manager/features/add/widgets/information_section.dart';
 
@@ -8,22 +7,23 @@ class AddPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: ColorsKeys.bgDefault,
+      backgroundColor: colors.surface,
       appBar: AppBar(
-        backgroundColor: ColorsKeys.bgDefault,
+        backgroundColor: colors.surface,
         elevation: 1,
         shadowColor: Colors.black.withValues(alpha: 3),
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: Icon(Icons.arrow_back, color: ColorsKeys.textPrimary),
+          child: Icon(Icons.arrow_back, color: colors.primary),
         ),
         title: Text(
           'SHii',
           style: TextStyle(
-            color: ColorsKeys.textPrimary,
+            color: colors.primary,
             fontSize: 32,
             fontWeight: FontWeight.bold,
           ),
@@ -38,7 +38,7 @@ class AddPage extends StatelessWidget {
                 child: Text(
                   'Adicionar Música',
                   style: TextStyle(
-                    color: ColorsKeys.textPrimary,
+                    color: colors.onSurface,
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
@@ -48,7 +48,7 @@ class AddPage extends StatelessWidget {
             Center(
               child: Text(
                 'Faça o upload das suas músicas favoritas',
-                style: TextStyle(color: ColorsKeys.textPrimary, fontSize: 16),
+                style: TextStyle(color: colors.onSurface, fontSize: 16),
               ),
             ),
             Center(
@@ -61,12 +61,12 @@ class AddPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                backgroundColor: ColorsKeys.textPrimary,
+                backgroundColor: colors.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(28),
                 ),
               ),
-              child: const Text(
+              child: Text(
                 '+ Adicionar',
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
