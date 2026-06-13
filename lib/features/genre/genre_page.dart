@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:music_manager/core/colors/colors_keys.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_manager/core/theme/bloc/theme_bloc.dart';
+import 'package:music_manager/core/theme/bloc/theme_event.dart';
 
 class GenrePage extends StatefulWidget {
   const GenrePage({super.key});
@@ -19,15 +22,13 @@ class _GenrePageState extends State<GenrePage> {
     return Scaffold(
       backgroundColor: colors.surface,
       appBar: AppBar(
-        backgroundColor: colors.surface,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 1,
         shadowColor: Colors.black.withValues(alpha: 3),
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Icon(Icons.arrow_back, color: colors.primary),
-        ),
+        leadingWidth: 120,
+
         title: Text(
           'SHii',
           style: TextStyle(
@@ -36,7 +37,24 @@ class _GenrePageState extends State<GenrePage> {
             fontWeight: FontWeight.bold,
           ),
         ),
+
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 15),
+            child: GestureDetector(
+              onTap: () {
+                context.read<ThemeBloc>().add(ToggleThemeEvent());
+              },
+              child: Image.asset(
+                'assets/images/the.png',
+                scale: 15,
+                color: colors.primary,
+              ),
+            ),
+          ),
+        ],
       ),
+
       body: Column(
         children: [
           Center(

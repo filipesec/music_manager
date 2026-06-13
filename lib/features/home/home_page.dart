@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_manager/features/add/add_page.dart';
-import 'package:music_manager/features/genre/genre_page.dart';
 import 'package:music_manager/features/home/widgets/filter_section.dart';
 import 'package:music_manager/features/home/widgets/cards_section.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,13 +26,29 @@ class _HomePageState extends State<HomePage> {
         shadowColor: Colors.black.withValues(alpha: 3),
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
+        leadingWidth: 120,
+
         leading: Padding(
-          padding: EdgeInsets.only(left: 15),
-          child: GestureDetector(
-            onTap: () {
-              context.read<ThemeBloc>().add(ToggleThemeEvent());
-            },
-            child: Image.asset('assets/images/theme.png', scale: 25),
+          padding: const EdgeInsets.only(left: 15),
+          child: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 8),
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: colors.primary.withValues(alpha: 0.2),
+                  child: Icon(Icons.person, color: colors.primary),
+                ),
+              ),
+
+              Text(
+                'FILIPE',
+                style: TextStyle(
+                  color: colors.primary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
         title: Text(
@@ -46,25 +60,22 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AddPage()),
-              );
-            },
-            child: Container(
-              width: 60,
-              height: 40,
-              decoration: BoxDecoration(
+          Padding(
+            padding: EdgeInsets.only(right: 15),
+            child: GestureDetector(
+              onTap: () {
+                context.read<ThemeBloc>().add(ToggleThemeEvent());
+              },
+              child: Image.asset(
+                'assets/images/the.png',
+                scale: 15,
                 color: colors.primary,
-                shape: BoxShape.circle,
               ),
-              child: Icon(Icons.add, color: Colors.white),
             ),
           ),
         ],
       ),
+
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -83,25 +94,6 @@ class _HomePageState extends State<HomePage> {
               ),
 
               Spacer(),
-
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colors.surface,
-                    elevation: 0,
-                    side: BorderSide(color: Colors.grey, width: 1),
-                  ),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => GenrePage()),
-                  ),
-                  child: Text(
-                    'Gêneros',
-                    style: TextStyle(color: colors.onSurface, fontSize: 12),
-                  ),
-                ),
-              ),
             ],
           ),
           //filtro
