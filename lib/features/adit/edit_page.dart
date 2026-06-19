@@ -1,13 +1,152 @@
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:music_manager/core/data/database.dart';
+import 'package:music_manager/core/data/dao/genre_dao.dart';
+import 'package:music_manager/core/data/dao/music_dao.dart';
 import 'package:music_manager/features/adit/widgets/image_section_edit.dart';
 import 'package:music_manager/features/adit/widgets/information_section_edit.dart';
 
-class EditPage extends StatelessWidget {
-  const EditPage({super.key});
+class EditPage extends StatefulWidget {
+  final int id;
+  final String name;
+  final String artist;
+  final int? genreId;
+  final String? coverPath;
+  final String? musicPath;
+
+  const EditPage({
+    super.key,
+    required this.id,
+    required this.name,
+    required this.artist,
+    required this.genreId,
+    required this.coverPath,
+    required this.musicPath,
+  });
+
+  @override
+  State<EditPage> createState() => _EditPageState();
+}
+
+class _EditPageState extends State<EditPage> {
+  late AppDatabase _db;
+  late GenreDao _genreDao;
+  late MusicDao _musicDao;
+  List<GenreTableData> _genres = [];
+
+  late TextEditingController _nomeController;
+  late TextEditingController _artistaController;
+  int? _selectedGenreId;
+  String? _capaPath;
+  String? _musicaPath;
+
+  @override
+  void initState() {
+    super.initState();
+    _db = AppDatabase();
+    _genreDao = GenreDao(_db);
+    _musicDao = MusicDao(_db);
+    _nomeController = TextEditingController(text: widget.name);
+    _artistaController = TextEditingController(text: widget.artist);
+    _selectedGenreId = widget.genreId;
+    _capaPath = widget.coverPath;
+    _musicaPath = widget.musicPath;
+    _loadGenres();
+  }
+
+  Future<void> _loadGenres() async {
+    final data = await _genreDao.getAll();
+    setState(() {
+      _genres = data;
+    });
+  }
+
+  Future<void> _pickCapa() async {
+    final picker = ImagePicker();
+    final file = await picker.pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      setState(() {
+        _capaPath = file.path;
+      });
+    }
+  }
+
+  Future<void> _pickMusica() async {
+    final result = await FilePicker.platform.pickFiles(type: FileType.audio);
+    if (result != null) {
+      setState(() {
+        _musicaPath = result.files.single.path;
+      });
+    }
+  }
+
+  Future<void> _update() async {
+    if (_nomeController.text.isEmpty ||
+        _artistaController.text.isEmpty ||
+        _musicaPath == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Preencha nome, artista e selecione o arquivo de música',
+          ),
+        ),
+      );
+      return;
+    }
+
+    await _musicDao.update(
+      id: widget.id,
+      name: _nomeController.text,
+      artist: _artistaController.text,
+      musicPath: _musicaPath!,
+      genreId: _selectedGenreId,
+      coverPath: _capaPath,
+    );
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Música atualizada com sucesso!')),
+    );
+
+    Navigator.pop(context, true);
+  }
+
+  Future<void> _delete() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Excluir música'),
+        content: const Text('Tem certeza que deseja excluir esta música?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Excluir'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      await _musicDao.delete(widget.id);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Música excluída com sucesso!')),
+      );
+      Navigator.pop(context, true);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
       backgroundColor: colors.surface,
       appBar: AppBar(
@@ -54,25 +193,35 @@ class EditPage extends StatelessWidget {
             Center(
               child: Padding(
                 padding: EdgeInsets.only(top: 15),
-                child: ImageSectionEdit(),
+                child: ImageSectionEdit(onTap: _pickCapa, coverPath: _capaPath),
               ),
             ),
             Padding(
               padding: EdgeInsets.all(15),
-              child: InformationSectionEdit(),
+              child: InformationSectionEdit(
+                nomeController: _nomeController,
+                artistaController: _artistaController,
+                genres: _genres,
+                selectedGenreId: _selectedGenreId,
+                onGenreChanged: (value) {
+                  setState(() {
+                    _selectedGenreId = value;
+                  });
+                },
+                onMusicaSelected: _pickMusica,
+                musicaPath: _musicaPath,
+              ),
             ),
-
             Padding(
               padding: EdgeInsets.only(left: 80, right: 80),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: _update,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: colors.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -88,18 +237,16 @@ class EditPage extends StatelessWidget {
                 ),
               ),
             ),
-
             Padding(
               padding: EdgeInsets.only(left: 125, right: 125, top: 15),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: _delete,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -119,5 +266,13 @@ class EditPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _nomeController.dispose();
+    _artistaController.dispose();
+    _db.close();
+    super.dispose();
   }
 }

@@ -3,6 +3,8 @@ import 'package:music_manager/core/colors/colors_keys.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_manager/core/theme/bloc/theme_bloc.dart';
 import 'package:music_manager/core/theme/bloc/theme_event.dart';
+import 'package:music_manager/core/data/database.dart';
+import 'package:music_manager/core/data/dao/genre_dao.dart';
 
 class GenrePage extends StatefulWidget {
   const GenrePage({super.key});
@@ -12,9 +14,41 @@ class GenrePage extends StatefulWidget {
 }
 
 class _GenrePageState extends State<GenrePage> {
-  final List<String> generos = ['Rock', 'Pop', 'MPB', 'Samba', 'Eletrônica'];
+  late AppDatabase _db;
+  late GenreDao _genreDao;
+  List<GenreTableData> generos = [];
   final TextEditingController _controller = TextEditingController();
-  int? _editingIndex;
+  int? _editingId;
+
+  @override
+  void initState() {
+    super.initState();
+    _db = AppDatabase();
+    _genreDao = GenreDao(_db);
+    _loadGeneros();
+  }
+
+  Future<void> _loadGeneros() async {
+    final data = await _genreDao.getAll();
+    setState(() {
+      generos = data;
+    });
+  }
+
+  Future<void> _addGenero(String name) async {
+    await _genreDao.insert(name);
+    await _loadGeneros();
+  }
+
+  Future<void> _updateGenero(int id, String name) async {
+    await _genreDao.update(id, name);
+    await _loadGeneros();
+  }
+
+  Future<void> _deleteGenero(int id) async {
+    await _genreDao.delete(id);
+    await _loadGeneros();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +62,6 @@ class _GenrePageState extends State<GenrePage> {
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
         leadingWidth: 120,
-
         title: Text(
           'SHii',
           style: TextStyle(
@@ -37,7 +70,6 @@ class _GenrePageState extends State<GenrePage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 15),
@@ -54,7 +86,6 @@ class _GenrePageState extends State<GenrePage> {
           ),
         ],
       ),
-
       body: Column(
         children: [
           Center(
@@ -70,7 +101,6 @@ class _GenrePageState extends State<GenrePage> {
               ),
             ),
           ),
-
           Padding(
             padding: EdgeInsets.all(16),
             child: SizedBox(
@@ -102,15 +132,13 @@ class _GenrePageState extends State<GenrePage> {
               child: ElevatedButton(
                 onPressed: () {
                   if (_controller.text.isNotEmpty) {
-                    setState(() {
-                      if (_editingIndex != null) {
-                        generos[_editingIndex!] = _controller.text;
-                        _editingIndex = null;
-                      } else {
-                        generos.add(_controller.text);
-                      }
-                      _controller.clear();
-                    });
+                    if (_editingId != null) {
+                      _updateGenero(_editingId!, _controller.text);
+                      _editingId = null;
+                    } else {
+                      _addGenero(_controller.text);
+                    }
+                    _controller.clear();
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -120,7 +148,7 @@ class _GenrePageState extends State<GenrePage> {
                   ),
                 ),
                 child: Text(
-                  _editingIndex != null ? 'SALVAR' : 'ADICIONAR',
+                  _editingId != null ? 'SALVAR' : 'ADICIONAR',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -144,7 +172,7 @@ class _GenrePageState extends State<GenrePage> {
                     child: ListTile(
                       leading: Icon(Icons.label, color: colors.onSurface),
                       title: Text(
-                        genero,
+                        genero.name,
                         style: TextStyle(color: colors.onSurface, fontSize: 16),
                       ),
                       trailing: Row(
@@ -154,17 +182,15 @@ class _GenrePageState extends State<GenrePage> {
                             icon: Icon(Icons.edit, color: colors.onSurface),
                             onPressed: () {
                               setState(() {
-                                _editingIndex = index;
-                                _controller.text = genero;
+                                _editingId = genero.id;
+                                _controller.text = genero.name;
                               });
                             },
                           ),
                           IconButton(
                             icon: Icon(Icons.delete, color: Colors.red),
                             onPressed: () {
-                              setState(() {
-                                generos.removeAt(index);
-                              });
+                              _deleteGenero(genero.id);
                             },
                           ),
                         ],

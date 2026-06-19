@@ -1,8 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:music_manager/features/add/widgets/information.dart';
+import 'package:music_manager/core/data/database.dart';
 
 class InformationSection extends StatelessWidget {
-  const InformationSection({super.key});
+  final List<GenreTableData> genres;
+  final Function(String) onMusicaSelected;
+  final Function(int?) onGeneroChanged;
+  final TextEditingController nomeController;
+  final TextEditingController artistaController;
+  final int? selectedGenreId;
+
+  const InformationSection({
+    super.key,
+    required this.genres,
+    required this.onMusicaSelected,
+    required this.onGeneroChanged,
+    required this.nomeController,
+    required this.artistaController,
+    required this.selectedGenreId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +39,16 @@ class InformationSection extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [Information()],
+        children: [
+          Information(
+            genres: genres,
+            onMusicaSelected: onMusicaSelected,
+            onGeneroChanged: onGeneroChanged,
+            nomeController: nomeController,
+            artistaController: artistaController,
+            selectedGenreId: selectedGenreId,
+          ),
+        ],
       ),
     );
   }

@@ -1,8 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:music_manager/features/adit/widgets/information_edit.dart';
+import 'package:music_manager/core/data/database.dart';
 
 class InformationSectionEdit extends StatelessWidget {
-  const InformationSectionEdit({super.key});
+  final TextEditingController nomeController;
+  final TextEditingController artistaController;
+  final List<GenreTableData> genres;
+  final int? selectedGenreId;
+  final Function(int?) onGenreChanged;
+  final VoidCallback onMusicaSelected;
+  final String? musicaPath;
+
+  const InformationSectionEdit({
+    super.key,
+    required this.nomeController,
+    required this.artistaController,
+    required this.genres,
+    required this.selectedGenreId,
+    required this.onGenreChanged,
+    required this.onMusicaSelected,
+    required this.musicaPath,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +41,17 @@ class InformationSectionEdit extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [InformationEdit()],
+        children: [
+          InformationEdit(
+            nomeController: nomeController,
+            artistaController: artistaController,
+            genres: genres,
+            selectedGenreId: selectedGenreId,
+            onGenreChanged: onGenreChanged,
+            onMusicaSelected: onMusicaSelected,
+            musicaPath: musicaPath,
+          ),
+        ],
       ),
     );
   }

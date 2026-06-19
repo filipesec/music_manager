@@ -3,24 +3,18 @@ import 'package:flutter/material.dart';
 class Filter extends StatelessWidget {
   final String selectedCategory;
   final ValueChanged<String> onCategorySelected;
+  final List<String> categories;
 
   const Filter({
     super.key,
     required this.selectedCategory,
     required this.onCategorySelected,
+    required this.categories,
   });
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final categories = [
-      'Todos',
-      'Rock',
-      'Pop',
-      'Eletrónica',
-      'MPB',
-      'Clássica',
-    ];
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -44,7 +38,7 @@ class Filter extends StatelessWidget {
               ),
               selected: selectedCategory == category,
               onSelected: (_) => onCategorySelected(category),
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             ),
           );
         }).toList(),
