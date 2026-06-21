@@ -1,1 +1,0 @@
- /home/filipe/projects/mobile/music_manager/.dart_tool/flutter_build/ab85680c71a84c12fa2d7a9cc264bb3f/native_assets.json: 

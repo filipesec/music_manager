@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_manager/core/colors/colors_keys.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_manager/core/theme/bloc/theme_bloc.dart';
 import 'package:music_manager/core/theme/bloc/theme_event.dart';
@@ -121,7 +120,7 @@ class _GenrePageState extends State<GenrePage> {
                     borderSide: BorderSide(color: Colors.grey, width: 1),
                   ),
                 ),
-                style: TextStyle(color: ColorsKeys.textPrimary),
+                style: TextStyle(color: colors.surface),
               ),
             ),
           ),
