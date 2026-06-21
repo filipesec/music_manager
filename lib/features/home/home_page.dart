@@ -8,6 +8,7 @@ import 'package:music_manager/core/theme/bloc/theme_event.dart';
 import 'package:music_manager/core/data/database.dart';
 import 'package:music_manager/core/data/dao/music_dao.dart';
 import 'package:music_manager/core/data/dao/genre_dao.dart';
+import 'package:drift_db_viewer/drift_db_viewer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -188,6 +189,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
+
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 15),
@@ -207,16 +209,36 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: Text(
-              'Minhas Músicas',
-              style: TextStyle(
-                color: colors.onSurface,
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 15),
+                child: Text(
+                  'Minhas Músicas',
+                  style: TextStyle(
+                    color: colors.onSurface,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-            ),
+              Spacer(),
+              Padding(
+                padding: EdgeInsets.only(right: 8),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DriftDbViewer(AppDatabase()),
+                      ),
+                    );
+                  },
+                  icon: Icon(Icons.storage, color: colors.primary),
+                  tooltip: 'Ver banco de dados',
+                ),
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),

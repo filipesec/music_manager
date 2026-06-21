@@ -120,7 +120,7 @@ class _GenrePageState extends State<GenrePage> {
                     borderSide: BorderSide(color: Colors.grey, width: 1),
                   ),
                 ),
-                style: TextStyle(color: colors.surface),
+                style: TextStyle(color: colors.onSurface),
               ),
             ),
           ),

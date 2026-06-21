@@ -146,6 +146,12 @@
       "languageVersion": "3.10"
     },
     {
+      "name": "db_viewer",
+      "rootUri": "file:///home/filipe/.pub-cache/hosted/pub.dev/db_viewer-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "dbus",
       "rootUri": "file:///home/filipe/.pub-cache/hosted/pub.dev/dbus-0.7.14",
       "packageUri": "lib/",
@@ -164,10 +170,22 @@
       "languageVersion": "3.10"
     },
     {
+      "name": "drift_db_viewer",
+      "rootUri": "file:///home/filipe/.pub-cache/hosted/pub.dev/drift_db_viewer-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.13"
+    },
+    {
       "name": "drift_dev",
       "rootUri": "file:///home/filipe/.pub-cache/hosted/pub.dev/drift_dev-2.34.0",
       "packageUri": "lib/",
       "languageVersion": "3.10"
+    },
+    {
+      "name": "drift_flutter",
+      "rootUri": "file:///home/filipe/.pub-cache/hosted/pub.dev/drift_flutter-0.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
     },
     {
       "name": "fake_async",
@@ -596,10 +614,22 @@
       "languageVersion": "3.1"
     },
     {
+      "name": "sqlcipher_flutter_libs",
+      "rootUri": "file:///home/filipe/.pub-cache/hosted/pub.dev/sqlcipher_flutter_libs-0.7.0+eol",
+      "packageUri": "lib/",
+      "languageVersion": "3.10"
+    },
+    {
       "name": "sqlite3",
       "rootUri": "file:///home/filipe/.pub-cache/hosted/pub.dev/sqlite3-3.3.3",
       "packageUri": "lib/",
       "languageVersion": "3.9"
+    },
+    {
+      "name": "sqlite3_flutter_libs",
+      "rootUri": "file:///home/filipe/.pub-cache/hosted/pub.dev/sqlite3_flutter_libs-0.6.0+eol",
+      "packageUri": "lib/",
+      "languageVersion": "3.10"
     },
     {
       "name": "sqlparser",

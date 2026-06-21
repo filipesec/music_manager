@@ -9,6 +9,8 @@
       "dependencies": [
         "dotted_border",
         "drift",
+        "drift_db_viewer",
+        "drift_flutter",
         "file_picker",
         "flutter",
         "flutter_bloc",
@@ -190,6 +192,30 @@
         "path_provider_linux",
         "path_provider_platform_interface",
         "path_provider_windows"
+      ]
+    },
+    {
+      "name": "drift_db_viewer",
+      "version": "2.1.0",
+      "dependencies": [
+        "db_viewer",
+        "drift",
+        "flutter",
+        "provider"
+      ]
+    },
+    {
+      "name": "drift_flutter",
+      "version": "0.3.0",
+      "dependencies": [
+        "drift",
+        "flutter",
+        "meta",
+        "path",
+        "path_provider",
+        "sqlcipher_flutter_libs",
+        "sqlite3",
+        "sqlite3_flutter_libs"
       ]
     },
     {
@@ -870,6 +896,24 @@
         "flutter",
         "nested"
       ]
+    },
+    {
+      "name": "db_viewer",
+      "version": "1.1.0",
+      "dependencies": [
+        "flutter",
+        "provider"
+      ]
+    },
+    {
+      "name": "sqlcipher_flutter_libs",
+      "version": "0.7.0+eol",
+      "dependencies": []
+    },
+    {
+      "name": "sqlite3_flutter_libs",
+      "version": "0.6.0+eol",
+      "dependencies": []
     },
     {
       "name": "bloc",

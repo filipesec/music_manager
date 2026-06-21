@@ -58,7 +58,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
       controller: _controller,
       decoration: InputDecoration(
         hintText: 'Buscar música ou artista...',
-        hintStyle: TextStyle(color: colors.onSurface.withOpacity(0.6)),
+        hintStyle: TextStyle(color: colors.onSurface.withValues(alpha: 0.6)),
         prefixIcon: Icon(Icons.search, color: colors.primary),
         suffixIcon: _query.isNotEmpty
             ? IconButton(
