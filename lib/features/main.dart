@@ -4,8 +4,11 @@ import 'package:music_manager/core/theme/bloc/theme_bloc.dart';
 import 'package:music_manager/core/theme/app_theme.dart';
 import 'package:music_manager/core/theme/bloc/theme_state.dart';
 import 'package:music_manager/features/main_page.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   runApp(const MainApp());
 }
 
