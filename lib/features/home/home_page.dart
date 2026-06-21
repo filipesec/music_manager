@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_manager/features/home/widgets/filter_section.dart';
 import 'package:music_manager/features/home/widgets/cards_section.dart';
+import 'package:music_manager/features/home/widgets/search_section.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_manager/core/theme/bloc/theme_bloc.dart';
 import 'package:music_manager/core/theme/bloc/theme_event.dart';
@@ -19,9 +20,11 @@ class _HomePageState extends State<HomePage> {
   late AppDatabase _db;
   late MusicDao _musicDao;
   late GenreDao _genreDao;
-  List<MusicTableData> _musicas = [];
+  List<MusicTableData> _allMusics = [];
+  List<MusicTableData> _displayedMusics = [];
   List<GenreTableData> _genres = [];
   String selectedCategory = 'Todos';
+  String _searchQuery = '';
   bool _isLoading = true;
 
   List<String> get _categories {
@@ -41,7 +44,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadData() async {
     await _loadGenres();
-    await _loadMusicas();
+    await _loadMusics();
     setState(() {
       _isLoading = false;
     });
@@ -51,21 +54,38 @@ class _HomePageState extends State<HomePage> {
     _genres = await _genreDao.getAll();
   }
 
-  Future<void> _loadMusicas() async {
-    if (selectedCategory == 'Todos') {
-      _musicas = await _musicDao.getAll();
-    } else {
+  Future<void> _loadMusics() async {
+    _allMusics = await _musicDao.getAll();
+    _applyFilters();
+  }
+
+  void _applyFilters() {
+    List<MusicTableData> filtered = List.from(_allMusics);
+
+    if (selectedCategory != 'Todos') {
       final genre = _genres.firstWhere(
         (g) => g.name == selectedCategory,
         orElse: () => const GenreTableData(id: 0, name: ''),
       );
       if (genre.id > 0) {
-        _musicas = await _musicDao.getByGenre(genre.id);
-      } else {
-        _musicas = await _musicDao.getAll();
+        filtered = filtered.where((m) => m.genreId == genre.id).toList();
       }
     }
-    setState(() {});
+
+    if (_searchQuery.isNotEmpty) {
+      final query = _searchQuery.toLowerCase();
+      filtered = filtered
+          .where(
+            (m) =>
+                m.name.toLowerCase().contains(query) ||
+                m.artist.toLowerCase().contains(query),
+          )
+          .toList();
+    }
+
+    setState(() {
+      _displayedMusics = filtered;
+    });
   }
 
   String _getGenreName(int? genreId) {
@@ -77,15 +97,23 @@ class _HomePageState extends State<HomePage> {
     return genre.name;
   }
 
-  Future<void> _onCategorySelected(String category) async {
-    setState(() {
-      selectedCategory = category;
-    });
-    await _loadMusicas();
+  void _onSearchChanged(String query) {
+    _searchQuery = query;
+    _applyFilters();
   }
 
-  Future<void> _refreshMusicas() async {
-    await _loadMusicas();
+  void _clearSearch() {
+    _searchQuery = '';
+    _applyFilters();
+  }
+
+  Future<void> _onCategorySelected(String category) async {
+    selectedCategory = category;
+    _applyFilters();
+  }
+
+  Future<void> _refreshMusics() async {
+    await _loadMusics();
   }
 
   Future<void> _deleteMusic(int id) async {
@@ -110,13 +138,19 @@ class _HomePageState extends State<HomePage> {
 
     if (confirm == true) {
       await _musicDao.delete(id);
-      await _loadMusicas();
+      await _loadMusics();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Música excluída com sucesso!')),
         );
       }
     }
+  }
+
+  @override
+  void dispose() {
+    _db.close();
+    super.dispose();
   }
 
   @override
@@ -173,21 +207,23 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Text(
-                  'Minhas Músicas',
-                  style: TextStyle(
-                    color: colors.onSurface,
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Text(
+              'Minhas Músicas',
+              style: TextStyle(
+                color: colors.onSurface,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
               ),
-              const Spacer(),
-            ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: SearchBarWidget(
+              onChanged: _onSearchChanged,
+              onClear: _clearSearch,
+            ),
           ),
           Padding(
             padding: EdgeInsets.all(8),
@@ -202,10 +238,12 @@ class _HomePageState extends State<HomePage> {
                 ? Center(
                     child: CircularProgressIndicator(color: colors.primary),
                   )
-                : _musicas.isEmpty
+                : _displayedMusics.isEmpty
                 ? Center(
                     child: Text(
-                      'Nenhuma música adicionada',
+                      _searchQuery.isNotEmpty
+                          ? 'Nenhuma música encontrada para "$_searchQuery"'
+                          : 'Nenhuma música adicionada',
                       style: TextStyle(color: colors.onSurface),
                     ),
                   )
@@ -218,9 +256,9 @@ class _HomePageState extends State<HomePage> {
                           mainAxisSpacing: 5,
                           crossAxisSpacing: 5,
                         ),
-                    itemCount: _musicas.length,
+                    itemCount: _displayedMusics.length,
                     itemBuilder: (context, index) {
-                      final musica = _musicas[index];
+                      final musica = _displayedMusics[index];
                       return CardSection(
                         id: musica.id,
                         cover: musica.coverPath,
@@ -230,7 +268,7 @@ class _HomePageState extends State<HomePage> {
                         musicPath: musica.musicPath,
                         genreName: _getGenreName(musica.genreId),
                         onDelete: () => _deleteMusic(musica.id),
-                        onRefresh: _refreshMusicas,
+                        onRefresh: _refreshMusics,
                       );
                     },
                   ),
@@ -238,11 +276,5 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _db.close();
-    super.dispose();
   }
 }

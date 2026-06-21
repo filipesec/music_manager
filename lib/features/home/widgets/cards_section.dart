@@ -104,7 +104,7 @@ class CardSection extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     child: Container(
                       height: 25,
-                      width: 50,
+                      width: 90,
                       decoration: BoxDecoration(
                         color: colors.primary,
                         borderRadius: BorderRadius.circular(20),

@@ -1,10 +1,5 @@
-import 'package:equatable/equatable.dart';
-
-abstract class ThemeEvent extends Equatable {
+abstract class ThemeEvent {
   const ThemeEvent();
-
-  @override
-  List<Object?> get props => [];
 }
 
 class ToggleThemeEvent extends ThemeEvent {}
