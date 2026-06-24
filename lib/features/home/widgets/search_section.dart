@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class SearchBarWidget extends StatefulWidget {
+class SearchSection extends StatefulWidget {
   final Function(String) onChanged;
   final VoidCallback onClear;
   final String? initialText;
 
-  const SearchBarWidget({
+  const SearchSection({
     super.key,
     required this.onChanged,
     required this.onClear,
@@ -13,10 +13,11 @@ class SearchBarWidget extends StatefulWidget {
   });
 
   @override
-  State<SearchBarWidget> createState() => _SearchBarWidgetState();
+  State<SearchSection> createState() => _SearchSectionState();
 }
 
-class _SearchBarWidgetState extends State<SearchBarWidget> {
+class _SearchSectionState extends State<SearchSection> {
+  //controller para o campo de busca
   late TextEditingController _controller;
   String _query = '';
 
@@ -53,7 +54,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-
+    //campo de texto
     return TextField(
       controller: _controller,
       decoration: InputDecoration(

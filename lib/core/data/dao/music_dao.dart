@@ -6,19 +6,12 @@ class MusicDao {
 
   MusicDao(this.db);
 
+  //busca todas as músicas
   Future<List<MusicTableData>> getAll() {
     return db.select(db.musicTable).get();
   }
 
-  Future<List<MusicTableData>> getByGenre(int? genreId) {
-    if (genreId == null) {
-      return getAll();
-    }
-    return (db.select(
-      db.musicTable,
-    )..where((t) => t.genreId.equals(genreId))).get();
-  }
-
+  //insere uma nova música
   Future<int> insert({
     required String name,
     required String artist,
@@ -41,6 +34,7 @@ class MusicDao {
         );
   }
 
+  //atualiza uma música já existente
   Future<int> update({
     required int id,
     required String name,
@@ -60,6 +54,7 @@ class MusicDao {
     );
   }
 
+  //deleta música
   Future<int> delete(int id) {
     return (db.delete(db.musicTable)..where((t) => t.id.equals(id))).go();
   }

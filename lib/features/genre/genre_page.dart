@@ -15,7 +15,7 @@ class GenrePage extends StatefulWidget {
 class _GenrePageState extends State<GenrePage> {
   late AppDatabase _db;
   late GenreDao _genreDao;
-  List<GenreTableData> generos = [];
+  List<GenreTableData> geners = [];
   final TextEditingController _controller = TextEditingController();
   int? _editingId;
 
@@ -30,7 +30,7 @@ class _GenrePageState extends State<GenrePage> {
   Future<void> _loadGeneros() async {
     final data = await _genreDao.getAll();
     setState(() {
-      generos = data;
+      geners = data;
     });
   }
 
@@ -44,7 +44,7 @@ class _GenrePageState extends State<GenrePage> {
     await _loadGeneros();
   }
 
-  Future<void> _deleteGenero(int id) async {
+  Future<void> _deleteGenre(int id) async {
     await _genreDao.delete(id);
     await _loadGeneros();
   }
@@ -100,6 +100,8 @@ class _GenrePageState extends State<GenrePage> {
               ),
             ),
           ),
+
+          //campo do nome
           Padding(
             padding: EdgeInsets.all(16),
             child: SizedBox(
@@ -124,6 +126,8 @@ class _GenrePageState extends State<GenrePage> {
               ),
             ),
           ),
+
+          //botão para salvar ou atualizar
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: SizedBox(
@@ -154,12 +158,14 @@ class _GenrePageState extends State<GenrePage> {
             ),
           ),
           Padding(padding: EdgeInsets.only(top: 24)),
+
+          //lista de gêneros
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.all(16),
-              itemCount: generos.length,
+              itemCount: geners.length,
               itemBuilder: (context, index) {
-                final genero = generos[index];
+                final genero = geners[index];
                 return Padding(
                   padding: EdgeInsets.only(bottom: 12),
                   child: Card(
@@ -177,6 +183,7 @@ class _GenrePageState extends State<GenrePage> {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          //editar
                           IconButton(
                             icon: Icon(Icons.edit, color: colors.onSurface),
                             onPressed: () {
@@ -186,10 +193,12 @@ class _GenrePageState extends State<GenrePage> {
                               });
                             },
                           ),
+
+                          //excluir
                           IconButton(
                             icon: Icon(Icons.delete, color: Colors.red),
                             onPressed: () {
-                              _deleteGenero(genero.id);
+                              _deleteGenre(genero.id);
                             },
                           ),
                         ],

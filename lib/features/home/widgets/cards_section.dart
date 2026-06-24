@@ -30,6 +30,7 @@ class CardSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    //gesture detector para abrir a tela de player
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -44,6 +45,7 @@ class CardSection extends StatelessWidget {
           ),
         );
       },
+      //card que vai ter as informações das músicas
       child: Card(
         elevation: 1,
         color: colors.surfaceContainerHighest,
@@ -54,6 +56,7 @@ class CardSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
+                //imagem
                 child: Container(
                   height: 150,
                   width: 160,
@@ -80,6 +83,8 @@ class CardSection extends StatelessWidget {
                         ),
                 ),
               ),
+
+              //nome
               Padding(
                 padding: const EdgeInsets.only(left: 8, top: 5),
                 child: Text(
@@ -91,6 +96,8 @@ class CardSection extends StatelessWidget {
                   ),
                 ),
               ),
+
+              //artista
               Padding(
                 padding: const EdgeInsets.only(left: 8, top: 2),
                 child: Text(
@@ -98,8 +105,10 @@ class CardSection extends StatelessWidget {
                   style: TextStyle(color: colors.onSurface, fontSize: 15),
                 ),
               ),
+
               Row(
                 children: [
+                  //gênero
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: Container(
@@ -120,6 +129,7 @@ class CardSection extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
+                  //ir para a tela de edição
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -143,6 +153,8 @@ class CardSection extends StatelessWidget {
                       child: const Icon(Icons.edit, size: 20),
                     ),
                   ),
+
+                  //deletar
                   GestureDetector(
                     onTap: onDelete,
                     child: const Icon(

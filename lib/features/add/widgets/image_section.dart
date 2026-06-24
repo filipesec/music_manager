@@ -15,6 +15,7 @@ class ImageSection extends StatefulWidget {
 class _ImageSectionState extends State<ImageSection> {
   String? _selectedImagePath;
 
+  //abrir galeria para selecionar imagem
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final file = await picker.pickImage(source: ImageSource.gallery);

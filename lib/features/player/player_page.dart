@@ -23,9 +23,11 @@ class PlayerPage extends StatefulWidget {
 
 class _PlayerPageState extends State<PlayerPage> {
   late AudioPlayer _player;
+  //estado de reprodução
   bool _isPlaying = false;
   Duration _duration = Duration.zero;
   Duration _position = Duration.zero;
+  //strems para mudanças
   late StreamSubscription<Duration?> _positionSubscription;
   late StreamSubscription<Duration?> _durationSubscription;
 
@@ -44,6 +46,7 @@ class _PlayerPageState extends State<PlayerPage> {
     });
   }
 
+  //carrega o arquivo de música e configura as steams
   Future<void> _initPlayer() async {
     await _player.setFilePath(widget.musicPath);
     _duration = _player.duration ?? Duration.zero;
@@ -65,10 +68,12 @@ class _PlayerPageState extends State<PlayerPage> {
     });
   }
 
+  //tocar
   void _play() async {
     await _player.play();
   }
 
+  //pausar
   void _pause() async {
     await _player.pause();
   }
@@ -107,67 +112,84 @@ class _PlayerPageState extends State<PlayerPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              height: 200,
-              width: 200,
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: widget.coverPath != null && widget.coverPath!.isNotEmpty
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.file(
-                        File(widget.coverPath!),
-                        fit: BoxFit.cover,
-                        width: 200,
-                        height: 200,
-                      ),
-                    )
-                  : Icon(Icons.music_note, size: 80, color: Colors.white),
-            ),
-            const Padding(padding: EdgeInsets.only(top: 24)),
-            Text(
-              widget.name,
-              style: TextStyle(
-                color: colors.onSurface,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const Padding(padding: EdgeInsets.only(top: 8)),
-            Text(
-              widget.artist,
-              style: TextStyle(color: colors.onSurface, fontSize: 18),
-            ),
-            const Padding(padding: EdgeInsets.only(top: 16)),
+            //capa da música
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              child: Row(
-                children: [
-                  Text(
-                    _position.toString().split('.').first,
-                    style: TextStyle(color: colors.onSurface, fontSize: 12),
-                  ),
-                  Expanded(
-                    child: Slider(
-                      value: _position.inSeconds.toDouble(),
-                      max: _duration.inSeconds.toDouble(),
-                      onChanged: (value) async {
-                        final position = Duration(seconds: value.toInt());
-                        await _player.seek(position);
-                      },
-                      activeColor: colors.primary,
-                    ),
-                  ),
-                  Text(
-                    _duration.toString().split('.').first,
-                    style: TextStyle(color: colors.onSurface, fontSize: 12),
-                  ),
-                ],
+              padding: EdgeInsets.only(bottom: 24),
+              child: Container(
+                height: 200,
+                width: 200,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: widget.coverPath != null && widget.coverPath!.isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.file(
+                          File(widget.coverPath!),
+                          fit: BoxFit.cover,
+                          width: 200,
+                          height: 200,
+                        ),
+                      )
+                    : Icon(Icons.music_note, size: 80, color: Colors.white),
               ),
             ),
-            const Padding(padding: EdgeInsets.only(top: 32)),
+
+            //nome da musica
+            Padding(
+              padding: EdgeInsets.only(bottom: 8),
+              child: Text(
+                widget.name,
+                style: TextStyle(
+                  color: colors.onSurface,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+            //artista
+            Padding(
+              padding: EdgeInsets.only(bottom: 16),
+              child: Text(
+                widget.artist,
+                style: TextStyle(color: colors.onSurface, fontSize: 18),
+              ),
+            ),
+
+            //barra de progresso
+            Padding(
+              padding: EdgeInsets.only(bottom: 32),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Row(
+                  children: [
+                    Text(
+                      _position.toString().split('.').first,
+                      style: TextStyle(color: colors.onSurface, fontSize: 12),
+                    ),
+                    Expanded(
+                      child: Slider(
+                        value: _position.inSeconds.toDouble(),
+                        max: _duration.inSeconds.toDouble(),
+                        onChanged: (value) async {
+                          final position = Duration(seconds: value.toInt());
+                          await _player.seek(position);
+                        },
+                        activeColor: colors.primary,
+                      ),
+                    ),
+                    Text(
+                      _duration.toString().split('.').first,
+                      style: TextStyle(color: colors.onSurface, fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            //botão central play e pause
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

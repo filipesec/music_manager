@@ -5,19 +5,19 @@ import 'package:music_manager/core/data/database.dart';
 
 class Information extends StatefulWidget {
   final List<GenreTableData> genres;
-  final Function(String) onMusicaSelected;
-  final Function(int?) onGeneroChanged;
-  final TextEditingController nomeController;
-  final TextEditingController artistaController;
+  final Function(String) onMusicSelected;
+  final Function(int?) onGenreChanged;
+  final TextEditingController nameController;
+  final TextEditingController artistController;
   final int? selectedGenreId;
 
   const Information({
     super.key,
     required this.genres,
-    required this.onMusicaSelected,
-    required this.onGeneroChanged,
-    required this.nomeController,
-    required this.artistaController,
+    required this.onMusicSelected,
+    required this.onGenreChanged,
+    required this.nameController,
+    required this.artistController,
     required this.selectedGenreId,
   });
 
@@ -28,13 +28,14 @@ class Information extends StatefulWidget {
 class _InformationState extends State<Information> {
   String? _selectedFileName;
 
-  Future<void> _pickMusica(BuildContext context) async {
+  //abrir galeria para selecionar música
+  Future<void> _pickMusic(BuildContext context) async {
     final result = await FilePicker.platform.pickFiles(type: FileType.audio);
     if (result != null) {
       setState(() {
         _selectedFileName = result.files.single.name;
       });
-      widget.onMusicaSelected(result.files.single.path!);
+      widget.onMusicSelected(result.files.single.path!);
     }
   }
 
@@ -55,8 +56,10 @@ class _InformationState extends State<Information> {
             ),
           ),
         ),
+
+        //gesture detector para o pickMusic
         GestureDetector(
-          onTap: () => _pickMusica(context),
+          onTap: () => _pickMusic(context),
           child: DottedBorder(
             options: RoundedRectDottedBorderOptions(
               radius: Radius.circular(10),
@@ -95,6 +98,8 @@ class _InformationState extends State<Information> {
             ),
           ),
         ),
+
+        //nome da música
         Padding(
           padding: EdgeInsets.only(top: 8),
           child: Text(
@@ -109,7 +114,7 @@ class _InformationState extends State<Information> {
         SizedBox(
           width: 325,
           child: TextField(
-            controller: widget.nomeController,
+            controller: widget.nameController,
             decoration: InputDecoration(
               hintText: 'Digite o nome da música',
               hintStyle: TextStyle(color: Colors.grey),
@@ -126,6 +131,8 @@ class _InformationState extends State<Information> {
             ),
           ),
         ),
+
+        //nome do artista
         Padding(
           padding: EdgeInsets.only(top: 8),
           child: Text(
@@ -140,7 +147,7 @@ class _InformationState extends State<Information> {
         SizedBox(
           width: 325,
           child: TextField(
-            controller: widget.artistaController,
+            controller: widget.artistController,
             decoration: InputDecoration(
               hintText: 'Digite o nome do artista ou banda',
               hintStyle: TextStyle(color: Colors.grey),
@@ -157,6 +164,8 @@ class _InformationState extends State<Information> {
             ),
           ),
         ),
+
+        //gêneros
         Padding(
           padding: EdgeInsets.only(top: 8),
           child: Text(
@@ -194,7 +203,7 @@ class _InformationState extends State<Information> {
               );
             }).toList(),
             onChanged: (value) {
-              widget.onGeneroChanged(value);
+              widget.onGenreChanged(value);
             },
           ),
         ),

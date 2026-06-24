@@ -21,11 +21,11 @@ class _AddPageState extends State<AddPage> {
   late MusicDao _musicDao;
   List<GenreTableData> _genres = [];
 
-  final TextEditingController _nomeController = TextEditingController();
-  final TextEditingController _artistaController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _artistController = TextEditingController();
   int? _selectedGenreId;
-  String? _capaPath;
-  String? _musicaPath;
+  String? _coverPath;
+  String? _musicPath;
 
   @override
   void initState() {
@@ -47,40 +47,41 @@ class _AddPageState extends State<AddPage> {
     }
   }
 
-  void _onCapaSelected(String path) {
+  void _onCoverSelected(String path) {
     setState(() {
-      _capaPath = path;
+      _coverPath = path;
     });
   }
 
-  void _onMusicaSelected(String path) {
+  void _onMusicSelected(String path) {
     setState(() {
-      _musicaPath = path;
+      _musicPath = path;
     });
   }
 
-  void _onGeneroChanged(int? value) {
+  void _onGenreChanged(int? value) {
     setState(() {
       _selectedGenreId = value;
     });
   }
 
+  //adicionar no banco
   Future<void> _save() async {
-    if (_nomeController.text.isEmpty) {
+    if (_nameController.text.isEmpty) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Digite o nome da música')));
       return;
     }
 
-    if (_artistaController.text.isEmpty) {
+    if (_artistController.text.isEmpty) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Digite o nome do artista')));
       return;
     }
 
-    if (_musicaPath == null) {
+    if (_musicPath == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Selecione o arquivo de música')),
       );
@@ -88,11 +89,11 @@ class _AddPageState extends State<AddPage> {
     }
 
     await _musicDao.insert(
-      name: _nomeController.text,
-      artist: _artistaController.text,
-      musicPath: _musicaPath!,
+      name: _nameController.text,
+      artist: _artistController.text,
+      musicPath: _musicPath!,
       genreId: _selectedGenreId,
-      coverPath: _capaPath,
+      coverPath: _coverPath,
     );
 
     if (!mounted) return;
@@ -100,21 +101,19 @@ class _AddPageState extends State<AddPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Música adicionada com sucesso!')),
     );
-
-    // Limpa o formulário em vez de fechar a tela
-    _nomeController.clear();
-    _artistaController.clear();
+    _nameController.clear();
+    _artistController.clear();
     setState(() {
       _selectedGenreId = null;
-      _capaPath = null;
-      _musicaPath = null;
+      _coverPath = null;
+      _musicPath = null;
     });
   }
 
   @override
   void dispose() {
-    _nomeController.dispose();
-    _artistaController.dispose();
+    _nameController.dispose();
+    _artistController.dispose();
     _db.close();
     super.dispose();
   }
@@ -177,23 +176,29 @@ class _AddPageState extends State<AddPage> {
                 style: TextStyle(color: colors.onSurface, fontSize: 16),
               ),
             ),
+
+            //imagem
             Center(
               child: Padding(
                 padding: EdgeInsets.only(top: 15),
-                child: ImageSection(onImageSelected: _onCapaSelected),
+                child: ImageSection(onImageSelected: _onCoverSelected),
               ),
             ),
+
+            //informações
             Padding(
               padding: EdgeInsets.all(15),
               child: InformationSection(
                 genres: _genres,
-                onMusicaSelected: _onMusicaSelected,
-                onGeneroChanged: _onGeneroChanged,
-                nomeController: _nomeController,
-                artistaController: _artistaController,
+                onMusicSelected: _onMusicSelected,
+                onGenreChanged: _onGenreChanged,
+                nomeController: _nameController,
+                artistaController: _artistController,
                 selectedGenreId: _selectedGenreId,
               ),
             ),
+
+            //botão para salvar
             ElevatedButton(
               onPressed: _save,
               style: ElevatedButton.styleFrom(

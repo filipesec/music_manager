@@ -3,17 +3,17 @@ import 'package:dotted_border/dotted_border.dart';
 import 'dart:io';
 
 class ImageSectionEdit extends StatelessWidget {
-  final VoidCallback onTap;
+  final VoidCallback onTapImage;
   final String? coverPath;
 
-  const ImageSectionEdit({super.key, required this.onTap, this.coverPath});
+  const ImageSectionEdit({super.key, required this.onTapImage, this.coverPath});
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTapImage,
       child: DottedBorder(
         options: RoundedRectDottedBorderOptions(
           radius: Radius.circular(20),

@@ -4,8 +4,8 @@ import 'package:music_manager/core/data/database.dart';
 
 class InformationSection extends StatelessWidget {
   final List<GenreTableData> genres;
-  final Function(String) onMusicaSelected;
-  final Function(int?) onGeneroChanged;
+  final Function(String) onMusicSelected;
+  final Function(int?) onGenreChanged;
   final TextEditingController nomeController;
   final TextEditingController artistaController;
   final int? selectedGenreId;
@@ -13,8 +13,8 @@ class InformationSection extends StatelessWidget {
   const InformationSection({
     super.key,
     required this.genres,
-    required this.onMusicaSelected,
-    required this.onGeneroChanged,
+    required this.onMusicSelected,
+    required this.onGenreChanged,
     required this.nomeController,
     required this.artistaController,
     required this.selectedGenreId,
@@ -42,10 +42,10 @@ class InformationSection extends StatelessWidget {
         children: [
           Information(
             genres: genres,
-            onMusicaSelected: onMusicaSelected,
-            onGeneroChanged: onGeneroChanged,
-            nomeController: nomeController,
-            artistaController: artistaController,
+            onMusicSelected: onMusicSelected,
+            onGenreChanged: onGenreChanged,
+            nameController: nomeController,
+            artistController: artistaController,
             selectedGenreId: selectedGenreId,
           ),
         ],

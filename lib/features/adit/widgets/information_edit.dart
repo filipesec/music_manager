@@ -1,56 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:music_manager/core/data/database.dart';
 
-class InformationEdit extends StatefulWidget {
-  final TextEditingController nomeController;
-  final TextEditingController artistaController;
+class InformationEdit extends StatelessWidget {
+  final TextEditingController nameController;
+  final TextEditingController artistController;
   final List<GenreTableData> genres;
   final int? selectedGenreId;
   final Function(int?) onGenreChanged;
-  final VoidCallback onMusicaSelected;
-  final String? musicaPath;
+  final VoidCallback onTapMusic;
+  final String? musicPath;
 
   const InformationEdit({
     super.key,
-    required this.nomeController,
-    required this.artistaController,
+    required this.nameController,
+    required this.artistController,
     required this.genres,
     required this.selectedGenreId,
     required this.onGenreChanged,
-    required this.onMusicaSelected,
-    required this.musicaPath,
+    required this.onTapMusic,
+    required this.musicPath,
   });
-
-  @override
-  State<InformationEdit> createState() => _InformationEditState();
-}
-
-class _InformationEditState extends State<InformationEdit> {
-  String? _selectedFileName;
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.musicaPath != null) {
-      _selectedFileName = widget.musicaPath!.split('/').last;
-    }
-  }
-
-  Future<void> _pickMusica(BuildContext context) async {
-    final result = await FilePicker.platform.pickFiles(type: FileType.audio);
-    if (result != null) {
-      setState(() {
-        _selectedFileName = result.files.single.name;
-      });
-      widget.onMusicaSelected();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final String fileName = musicPath != null ? musicPath!.split('/').last : '';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -66,7 +42,7 @@ class _InformationEditState extends State<InformationEdit> {
           ),
         ),
         GestureDetector(
-          onTap: () => _pickMusica(context),
+          onTap: onTapMusic,
           child: DottedBorder(
             options: RoundedRectDottedBorderOptions(
               radius: Radius.circular(10),
@@ -94,11 +70,9 @@ class _InformationEditState extends State<InformationEdit> {
                   ),
                   Expanded(
                     child: Text(
-                      _selectedFileName != null
-                          ? _selectedFileName!
-                          : (widget.musicaPath != null
-                                ? widget.musicaPath!.split('/').last
-                                : 'Selecionar Novo Arquivo'),
+                      fileName.isNotEmpty
+                          ? fileName
+                          : 'Selecionar Novo Arquivo',
                       style: TextStyle(color: colors.onSurface, fontSize: 16),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -123,7 +97,7 @@ class _InformationEditState extends State<InformationEdit> {
         SizedBox(
           width: 325,
           child: TextField(
-            controller: widget.nomeController,
+            controller: nameController,
             decoration: InputDecoration(
               hintText: 'Digite o nome da música',
               hintStyle: TextStyle(color: Colors.grey),
@@ -154,7 +128,7 @@ class _InformationEditState extends State<InformationEdit> {
         SizedBox(
           width: 325,
           child: TextField(
-            controller: widget.artistaController,
+            controller: artistController,
             decoration: InputDecoration(
               hintText: 'Digite o nome do artista ou banda',
               hintStyle: TextStyle(color: Colors.grey),
@@ -186,7 +160,7 @@ class _InformationEditState extends State<InformationEdit> {
           width: 325,
           height: 70,
           child: DropdownButtonFormField<int?>(
-            initialValue: widget.selectedGenreId,
+            initialValue: selectedGenreId,
             decoration: InputDecoration(
               hintText: 'Selecione o gênero musical',
               hintStyle: TextStyle(color: colors.onSurface),
@@ -201,13 +175,13 @@ class _InformationEditState extends State<InformationEdit> {
                 borderSide: BorderSide(color: Colors.grey, width: 1),
               ),
             ),
-            items: widget.genres.map((genre) {
+            items: genres.map((genre) {
               return DropdownMenuItem<int?>(
                 value: genre.id,
                 child: Text(genre.name),
               );
             }).toList(),
-            onChanged: widget.onGenreChanged,
+            onChanged: onGenreChanged,
           ),
         ),
       ],

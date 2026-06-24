@@ -38,8 +38,8 @@ class _EditPageState extends State<EditPage> {
   late TextEditingController _nomeController;
   late TextEditingController _artistaController;
   int? _selectedGenreId;
-  String? _capaPath;
-  String? _musicaPath;
+  String? _coverPath;
+  String? _musicPath;
 
   @override
   void initState() {
@@ -50,8 +50,8 @@ class _EditPageState extends State<EditPage> {
     _nomeController = TextEditingController(text: widget.name);
     _artistaController = TextEditingController(text: widget.artist);
     _selectedGenreId = widget.genreId;
-    _capaPath = widget.coverPath;
-    _musicaPath = widget.musicPath;
+    _coverPath = widget.coverPath;
+    _musicPath = widget.musicPath;
     _loadGenres();
   }
 
@@ -62,29 +62,32 @@ class _EditPageState extends State<EditPage> {
     });
   }
 
-  Future<void> _pickCapa() async {
+  //selecionar nova capa
+  Future<void> _pickImage() async {
     final picker = ImagePicker();
     final file = await picker.pickImage(source: ImageSource.gallery);
     if (file != null) {
       setState(() {
-        _capaPath = file.path;
+        _coverPath = file.path;
       });
     }
   }
 
-  Future<void> _pickMusica() async {
+  //selecionar nova música
+  Future<void> _pickMusic() async {
     final result = await FilePicker.platform.pickFiles(type: FileType.audio);
     if (result != null) {
       setState(() {
-        _musicaPath = result.files.single.path;
+        _musicPath = result.files.single.path;
       });
     }
   }
 
+  //atualizar
   Future<void> _update() async {
     if (_nomeController.text.isEmpty ||
         _artistaController.text.isEmpty ||
-        _musicaPath == null) {
+        _musicPath == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -99,9 +102,9 @@ class _EditPageState extends State<EditPage> {
       id: widget.id,
       name: _nomeController.text,
       artist: _artistaController.text,
-      musicPath: _musicaPath!,
+      musicPath: _musicPath!,
       genreId: _selectedGenreId,
-      coverPath: _capaPath,
+      coverPath: _coverPath,
     );
 
     if (!mounted) return;
@@ -113,6 +116,7 @@ class _EditPageState extends State<EditPage> {
     Navigator.pop(context, true);
   }
 
+  //deletar do banco
   Future<void> _delete() async {
     final confirm = await showDialog<bool>(
       context: context,
@@ -190,12 +194,19 @@ class _EditPageState extends State<EditPage> {
                 style: TextStyle(color: colors.onSurface, fontSize: 16),
               ),
             ),
+
+            //imagem
             Center(
               child: Padding(
                 padding: EdgeInsets.only(top: 15),
-                child: ImageSectionEdit(onTap: _pickCapa, coverPath: _capaPath),
+                child: ImageSectionEdit(
+                  onTapImage: _pickImage,
+                  coverPath: _coverPath,
+                ),
               ),
             ),
+
+            //informações
             Padding(
               padding: EdgeInsets.all(15),
               child: InformationSectionEdit(
@@ -208,10 +219,12 @@ class _EditPageState extends State<EditPage> {
                     _selectedGenreId = value;
                   });
                 },
-                onMusicaSelected: _pickMusica,
-                musicaPath: _musicaPath,
+                onTapMusic: _pickMusic,
+                musicPath: _musicPath,
               ),
             ),
+
+            //botão para salvar as alterações
             Padding(
               padding: EdgeInsets.only(left: 80, right: 80),
               child: ElevatedButton(
@@ -237,6 +250,8 @@ class _EditPageState extends State<EditPage> {
                 ),
               ),
             ),
+
+            //botão para deletar
             Padding(
               padding: EdgeInsets.only(left: 125, right: 125, top: 15),
               child: ElevatedButton(

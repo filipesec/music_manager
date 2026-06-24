@@ -19,6 +19,7 @@ class Filter extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
+        //mapeia as categorias para um FIlterChip
         children: categories.map((category) {
           return Padding(
             padding: const EdgeInsets.only(right: 8),
@@ -37,6 +38,7 @@ class Filter extends StatelessWidget {
                     : colors.onSurface,
               ),
               selected: selectedCategory == category,
+              //chama a função da categoria para ser selecionada
               onSelected: (_) => onCategorySelected(category),
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             ),

@@ -8,8 +8,8 @@ class InformationSectionEdit extends StatelessWidget {
   final List<GenreTableData> genres;
   final int? selectedGenreId;
   final Function(int?) onGenreChanged;
-  final VoidCallback onMusicaSelected;
-  final String? musicaPath;
+  final VoidCallback onTapMusic;
+  final String? musicPath;
 
   const InformationSectionEdit({
     super.key,
@@ -18,8 +18,8 @@ class InformationSectionEdit extends StatelessWidget {
     required this.genres,
     required this.selectedGenreId,
     required this.onGenreChanged,
-    required this.onMusicaSelected,
-    required this.musicaPath,
+    required this.onTapMusic,
+    required this.musicPath,
   });
 
   @override
@@ -43,13 +43,13 @@ class InformationSectionEdit extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           InformationEdit(
-            nomeController: nomeController,
-            artistaController: artistaController,
+            nameController: nomeController,
+            artistController: artistaController,
             genres: genres,
             selectedGenreId: selectedGenreId,
             onGenreChanged: onGenreChanged,
-            onMusicaSelected: onMusicaSelected,
-            musicaPath: musicaPath,
+            onTapMusic: onTapMusic,
+            musicPath: musicPath,
           ),
         ],
       ),

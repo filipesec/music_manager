@@ -5,16 +5,18 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:music_manager/core/data/tables/genre_table.dart';
 import 'package:music_manager/core/data/tables/music_table.dart';
-
+//código gerado pelo drift
 part 'database.g.dart';
 
 @DriftDatabase(tables: [GenreTable, MusicTable])
+//classe principal do banco
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
   @override
   int get schemaVersion => 1;
 }
 
+//função que abre a conexão
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();

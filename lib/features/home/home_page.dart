@@ -29,9 +29,9 @@ class _HomePageState extends State<HomePage> {
   bool _isLoading = true;
 
   List<String> get _categories {
-    final List<String> cats = ['Todos'];
-    cats.addAll(_genres.map((g) => g.name).toList());
-    return cats;
+    final List<String> genrs = ['Todos'];
+    genrs.addAll(_genres.map((g) => g.name).toList());
+    return genrs;
   }
 
   @override
@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> {
     _applyFilters();
   }
 
+  //aplicar filtros de lista e de pesquisa
   void _applyFilters() {
     List<MusicTableData> filtered = List.from(_allMusics);
 
@@ -117,6 +118,7 @@ class _HomePageState extends State<HomePage> {
     await _loadMusics();
   }
 
+  //deletar música do banco
   Future<void> _deleteMusic(int id) async {
     final confirm = await showDialog<bool>(
       context: context,
@@ -190,6 +192,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
 
+        //ativação de tema
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 15),
@@ -223,6 +226,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Spacer(),
+
+              //abrir o viewer
               Padding(
                 padding: EdgeInsets.only(right: 8),
                 child: IconButton(
@@ -240,13 +245,17 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
+
+          //campo de pesquisa
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            child: SearchBarWidget(
+            child: SearchSection(
               onChanged: _onSearchChanged,
               onClear: _clearSearch,
             ),
           ),
+
+          //filtro de gênero
           Padding(
             padding: EdgeInsets.all(8),
             child: Filter(
@@ -255,6 +264,8 @@ class _HomePageState extends State<HomePage> {
               categories: _categories,
             ),
           ),
+
+          //grid view cards
           Expanded(
             child: _isLoading
                 ? Center(
