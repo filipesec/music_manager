@@ -26,6 +26,10 @@ class InformationEdit extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final String fileName = musicPath != null ? musicPath!.split('/').last : '';
+    final int? initialGenreId =
+        selectedGenreId != null && genres.any((g) => g.id == selectedGenreId)
+        ? selectedGenreId
+        : null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,7 +164,7 @@ class InformationEdit extends StatelessWidget {
           width: 325,
           height: 70,
           child: DropdownButtonFormField<int?>(
-            initialValue: selectedGenreId,
+            initialValue: initialGenreId,
             decoration: InputDecoration(
               hintText: 'Selecione o gênero musical',
               hintStyle: TextStyle(color: colors.onSurface),

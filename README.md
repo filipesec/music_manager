@@ -28,3 +28,5 @@ Aplicativo de gerenciamento de músicas com banco de dados local (Drift), player
 | [image_picker](https://pub.dev/packages/image_picker) | Seleção de capa |
 
 ---
+
+##
